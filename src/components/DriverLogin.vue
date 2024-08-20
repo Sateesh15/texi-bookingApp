@@ -1,6 +1,8 @@
 <template >
+  <div class="page-container">
+    <Navbar />
     <div class="about">
-        <Navbar />
+      <div class="login-container">
       <form @submit.prevent="loginUser" class="login-form">
         <h2>Driver Login</h2>
         <input type="name" v-model="name" placeholder="Name" required>
@@ -14,6 +16,8 @@
         Invalid email or password. Please try again.
       </div>
     </div>
+  </div>
+  </div>
   </template>
   
   <script>
@@ -50,7 +54,7 @@
   }
   </script>
   
-  <style scoped>
+  <style>
   .login-form {
     max-width: 400px;
     margin: 0 auto;

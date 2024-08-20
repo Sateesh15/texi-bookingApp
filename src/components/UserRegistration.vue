@@ -3,10 +3,10 @@
         <navbar></navbar>
       <form @submit.prevent="registerUser" class="registration-form">
         <h2>User Registration</h2>
-        <input type="text" v-model="name" placeholder="Name" required>
+        <input type="text" v-model="name" placeholder="Name" required maxlength="25">
         <input type="email" v-model="email" placeholder="Email" required>
         <input type="password" v-model="password" placeholder="Password" required>
-        <input type="text" v-model="phoneNumber" placeholder="Phone Number" required>
+        <input type="text" v-model="phoneNumber" placeholder="Phone Number" v-mask="phoneMask" required maxlength="16">
         <button type="submit">Register</button>
         <router-link to="/" class="register-link">Login</router-link>
       </form>
@@ -16,6 +16,7 @@
   <script>
   import axios from 'axios';
   import Navbar from '../Navbar.vue';
+  import MASK_CONSTANTS from "../constants/mask-constants";
   
   export default {
     components: {
@@ -26,7 +27,8 @@
         name: '',
         email: '',
         password: '',
-        phoneNumber: ''
+        phoneNumber: '',
+        phoneMask: MASK_CONSTANTS.PHONE.DEFAULT
       };
     },
     methods: {

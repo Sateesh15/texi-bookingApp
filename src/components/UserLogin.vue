@@ -1,6 +1,8 @@
 <template >
+  <div class="page-container">
+  <navbar></navbar>
     <div class="about">
-        <navbar></navbar>
+      <div class="login-container">
       <form @submit.prevent="loginUser" class="login-form">
         <h2>User Login</h2>
         <input type="email" v-model="email" placeholder="Email" required>
@@ -11,8 +13,9 @@
         </div>
         <router-link to="/user/register" class="register-link">Register</router-link>
       </form>
-      
     </div>
+    </div>
+  </div>
   </template>
   
   <script>
@@ -25,6 +28,8 @@
   },
     data() {
       return {
+        userId:'',
+        name:'',
         email: '',
         password: '',
         showErrorMessage: false
@@ -35,9 +40,11 @@
         try {
           const response = await axios.post(`https://localhost:7200/api/Users/login?email=${this.email}&password=${this.password}`);
           console.log(response.data);
-          console.log("login success");
+          console.log("login success", response.data);
           // Set isLoggedIn flag in local storage
           localStorage.setItem('isLoggedIn', true);
+          localStorage.setItem('name', response.data.name);
+          localStorage.setItem('userId', response.data.userId);
           this.$router.push('/booking'); // Navigate to the booking form
         } catch (error) {
           console.error(error);
@@ -50,15 +57,40 @@
   }
   </script>
   
-  <style scoped>
+  <style>
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-image: url()
+}
+
+.page-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+  .about {
+  flex: 1; /* Make the about section take up remaining space */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-top: 15%;
+  }
+  .login-container {
+    display: flex;
+  justify-content: center;
+  align-items: center;
+  }
   .login-form {
     max-width: 400px;
-    margin: 0 auto;
-    padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    background-color: #f9f9f9;
-    margin-top: 10%;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: rgba(255, 255, 255, 0.9); /* Slightly transparent background */
   }
 
   h2{

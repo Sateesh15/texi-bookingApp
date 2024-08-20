@@ -5,7 +5,6 @@ import UserLogin from '../components/UserLogin.vue';
 import BookingForm from '../components/BookingForm.vue';
 import DriverRegistration from '../components/DriverRegistration.vue';
 import DriverLogin from '../components/DriverLogin.vue';
-import AvailableBookings from '../components/AvailableBookings.vue';
 import BookingDetails from '../components/BookingDetails.vue';
 
 const router = createRouter({
@@ -28,10 +27,10 @@ const router = createRouter({
   { path: '/booking', component: BookingForm },
   { path: '/driver/register', component: DriverRegistration },
   { path: '/driver/login', component: DriverLogin },
-  { path: '/bookings', component: AvailableBookings },
   { path: '/booking/details', component: BookingDetails },
   ]
 })
+
 
 router.beforeEach((to, from, next) => {
   document.body.style.backgroundColor = '#ffffff'; // Set background color to white
