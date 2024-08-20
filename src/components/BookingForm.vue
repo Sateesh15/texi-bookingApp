@@ -16,6 +16,13 @@
       
         <label for="destination">Destination:</label>
         <input type="text" id="destination" v-model="bookingDetails.destination" placeholder="Enter destination" required @input="updateDestinationManually">
+
+        <label for="vehicle-type">Vehicle Type:</label>
+        <select id="vehicle-type" v-model="bookingDetails.vehicleType" @change="updateVehicleType">
+          <option value="bike">Bike</option>
+          <option value="auto">Auto</option>
+          <option value="cab">Cab</option>
+        </select>
       
         <label for="driver">Driver:</label>
         <input type="text" id="driver" :value="driverName" placeholder="Driver" readonly>
@@ -94,6 +101,7 @@ export default {
         driverId: null,
         price: 0,
         isConfirmed: false,
+        vehicleType: "bike", // Default vehicle type
       },
       showForm: false,
       errorMessage: '',
@@ -125,6 +133,10 @@ export default {
         this.fetchDrivers1(); // Fetch available drivers when the form is shown
         
       }
+    },
+    updateVehicleType() {
+      this.$refs.map.bookingDetails.vehicleType = this.bookingDetails.vehicleType;
+      this.$refs.map.calculatePriceFromCoordinates(this.$refs.map.destination);
     },
     autoFillDriverId() {
         const availableDrivers = this.drivers.filter(driver => driver.isAvailable);

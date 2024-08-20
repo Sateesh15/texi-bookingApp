@@ -26,19 +26,10 @@
   
   <script>
   import { LMap, LTileLayer, LMarker, LPopup } from "@vue-leaflet/vue-leaflet";
-import "leaflet/dist/leaflet.css";
-import L from 'leaflet';
-import axios from 'axios';
+  import "leaflet/dist/leaflet.css";
+  import axios from 'axios';
 
-// Fix for Leaflet Default Icon
-delete L.Icon.Default.prototype._getIconUrl;
-
-L.Icon.Default.mergeOptions({
-  iconRetinaUrl: require('leaflet/dist/images/marker-icon-2x.png'),
-  iconUrl: require('leaflet/dist/images/marker-icon.png'),
-  shadowUrl: require('leaflet/dist/images/marker-shadow.png'),
-});
-
+ 
   
   export default {
     name: "MapComponent",
@@ -59,7 +50,8 @@ L.Icon.Default.mergeOptions({
         originAddress: null,
         destinationAddress: null, // Add destinationAddress variable
         bookingDetails: {
-        price: null // Initialize price here
+        price: null ,// Initialize price here
+        vehicleType: "bike", // Default vehicle type
       },
       };
     },
@@ -115,16 +107,24 @@ L.Icon.Default.mergeOptions({
     },*/
 
     calculatePriceFromCoordinates(destination) {
-    if (this.originAddress && destination) {
-      const originCoords = this.center; // Assuming center as origin
-      const distance = this.calculateDistance(originCoords, destination);
-      const price = distance * 10; // Assuming 10 currency units per km
-      //localStorage.setItem('calculatedPrice', price);
-      this.bookingDetails.price = price;
-      console.log("Price:", price);
-      this.$emit('price-updated', price);
+  if (this.originAddress && destination) {
+    const originCoords = this.center; // Assuming center as origin
+    const distance = this.calculateDistance(originCoords, destination);
+    let basePrice = distance * 10; // Assuming 10 currency units per km
+
+    // Adjust price based on vehicle type
+    if (this.bookingDetails.vehicleType === "auto") {
+      basePrice += 10; // Adding an additional cost for auto
+    } else if (this.bookingDetails.vehicleType === "cab") {
+      basePrice += 20; // Adding an additional cost for cab
     }
-  },
+
+    this.bookingDetails.price = basePrice.toFixed(2); // Ensure price is a string with two decimal places
+    console.log("Price:", this.bookingDetails.price);
+    this.$emit('price-updated', this.bookingDetails.price);
+  }
+},
+
       setUserLocation() {
         if (navigator.geolocation) {
           navigator.geolocation.getCurrentPosition(
